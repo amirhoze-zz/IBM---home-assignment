@@ -20,7 +20,31 @@ Message::Message(ifstream &_file)
         {
             length = stoi(&line_str[line_str.find_last_of(':') + 1]);
         }
+        if (line_str.find("Host:") != string::npos)
+        {
+            host = line_str.substr(line_str.find_first_of(':') + 1);
+        }
         number_of_headers++;
         getline(_file, line_str);
     }
+}
+
+stringstream Message::summary()
+{
+    stringstream summary;
+    std::size_t first_space_pos = start_line.find_first_of(' ');
+    std::size_t second_space_pos = start_line.find_first_of(' ', first_space_pos + 1);
+    if (start_line.find("HTTP/") == 0)
+    {
+        int code = stoi(start_line.substr(first_space_pos + 1));
+        string phrase = start_line.substr(second_space_pos);
+        summary << code << " " << phrase;
+    } else
+    {
+        string request_method = start_line.substr(0, first_space_pos - 1);
+        string request_url = host + start_line.substr(first_space_pos + 1, second_space_pos - 1);
+        summary << request_url;
+    }
+    summary << " " << "(" << number_of_headers << " headers," << length << " bytes)";
+    return summary;
 }
