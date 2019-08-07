@@ -1,7 +1,3 @@
-//
-// Created by amirh on 8/7/2019.
-//
-
 #ifndef IBM_HOME_ASSIGNMENT_MESSAGE_H
 #define IBM_HOME_ASSIGNMENT_MESSAGE_H
 
@@ -13,11 +9,12 @@ using namespace std;
 
 class Message
 {
+public:
     string start_line;
     int length;
     int number_of_headers;
-public:
-    Message(ifstream _file);
+
+    explicit Message(ifstream &_file);
 };
 
 #endif //IBM_HOME_ASSIGNMENT_MESSAGE_H

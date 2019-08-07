@@ -3,4 +3,4 @@ project(IBM--home-assignment)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(IBM--home-assignment main.cpp)
+add_executable(IBM--home-assignment main.cpp Message.cpp Message.h)
