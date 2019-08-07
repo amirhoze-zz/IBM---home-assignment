@@ -9,12 +9,12 @@ using namespace std;
 
 class Message
 {
-public:
     string start_line;
     string host_line;
     int length;
     int number_of_headers;
 
+public:
     explicit Message(ifstream &_file);
 
     string summary();
