@@ -37,16 +37,16 @@ string Message::summary()
     if (start_line.find("HTTP/") == 0)
     {
         int code = stoi(start_line.substr(first_space_pos + 1));
-        string phrase;
-        phrase = start_line.substr(second_space_pos, string::npos);
-        summary = code + " " + phrase;
+        string phrase = start_line.substr(second_space_pos, start_line.size() - 1 - second_space_pos);
+        summary = to_string(code) + phrase + " ";
+
     } else
     {
         string request_method = start_line.substr(0, first_space_pos);
         string request_url = start_line.substr(first_space_pos + 1, (second_space_pos) - (first_space_pos + 1));
         string host_str = host_line.substr(0, host_line.size() - 1);
-        summary = request_method + host_str + request_url + "(" + to_string(number_of_headers) + " headers," +
-                  to_string(length) + " bytes)";
+        summary = request_method + host_str + request_url;
     }
+    summary += "(" + to_string(number_of_headers) + " headers, " + to_string(length) + " bytes)";
     return summary;
 }
