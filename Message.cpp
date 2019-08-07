@@ -13,13 +13,14 @@ Message::Message(ifstream &_file)
     number_of_headers = 0;
     getline(_file, start_line);
     string line_str;
-    do
+    getline(_file, line_str);
+    while (line_str.find(':') != string::npos)
     {
-        getline(_file, line_str);
-        if (line_str.find("Content-Length:") == string::npos)
+        if (line_str.find("Content-Length:") != string::npos)
         {
-            length = stoi(line_str);
+            length = stoi(&line_str[line_str.find_last_of(':') + 1]);
         }
         number_of_headers++;
-    } while (line_str.find(':') != string::npos);
+        getline(_file, line_str);
+    }
 }
