@@ -22,29 +22,31 @@ Message::Message(ifstream &_file)
         }
         if (line_str.find("Host:") != string::npos)
         {
-            host = line_str.substr(line_str.find_first_of(':') + 1);
+            host_line = string(line_str.substr(line_str.find_first_of(':') + 1));
         }
         number_of_headers++;
         getline(_file, line_str);
     }
 }
 
-stringstream Message::summary()
+string Message::summary()
 {
-    stringstream summary;
+    string summary;
     std::size_t first_space_pos = start_line.find_first_of(' ');
     std::size_t second_space_pos = start_line.find_first_of(' ', first_space_pos + 1);
     if (start_line.find("HTTP/") == 0)
     {
         int code = stoi(start_line.substr(first_space_pos + 1));
-        string phrase = start_line.substr(second_space_pos);
-        summary << code << " " << phrase;
+        string phrase;
+        phrase = start_line.substr(second_space_pos, string::npos);
+        summary = code + " " + phrase;
     } else
     {
-        string request_method = start_line.substr(0, first_space_pos - 1);
-        string request_url = host + start_line.substr(first_space_pos + 1, second_space_pos - 1);
-        summary << request_url;
+        string request_method = start_line.substr(0, first_space_pos);
+        string request_url = start_line.substr(first_space_pos + 1, (second_space_pos) - (first_space_pos + 1));
+        string host_str = host_line.substr(0, host_line.size() - 1);
+        summary = request_method + host_str + request_url + "(" + to_string(number_of_headers) + " headers," +
+                  to_string(length) + " bytes)";
     }
-    summary << " " << "(" << number_of_headers << " headers," << length << " bytes)";
     return summary;
 }

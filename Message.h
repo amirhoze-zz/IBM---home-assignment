@@ -11,13 +11,13 @@ class Message
 {
 public:
     string start_line;
-    string host;
+    string host_line;
     int length;
     int number_of_headers;
 
     explicit Message(ifstream &_file);
 
-    stringstream summary();
+    string summary();
 };
 
 #endif //IBM_HOME_ASSIGNMENT_MESSAGE_H
